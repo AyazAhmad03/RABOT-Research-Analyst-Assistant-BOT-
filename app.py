@@ -110,9 +110,8 @@ def search_papers(query):
             []
         )
     except Exception as e:
-        st.error(
-        f"Search Error: {e}"
-    )
+        st.error(str(e))
+
 
     return []
 
