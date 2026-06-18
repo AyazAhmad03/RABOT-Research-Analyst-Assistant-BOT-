@@ -194,6 +194,6 @@ GitHub: https://github.com/AyazAhmad03
 
 ## License
 
-This project is intended for educational, research, and portfolio purposes.
-Responses are generated using AI and retrieved paper content.
+This project is intended for educational, research, and portfolio purposes.\n
+Responses are generated using AI and retrieved paper content.\n
 Users should verify important findings directly from the original research paper.
