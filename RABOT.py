@@ -5,6 +5,8 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 import requests
 import time
+import os
+from dotenv import load_dotenv
 
 # ==============================
 # Load environment variables
@@ -16,8 +18,9 @@ load_dotenv()
 # ==============================
 llm = HuggingFaceEndpoint(
     repo_id="meta-llama/Llama-3.1-8B-Instruct",
-    provider="novita"
-)
+    provider="novita",
+    huggingfacehub_api_token=os.getenv( "HUGGINGFACEHUB_API_TOKEN")
+    
 model = ChatHuggingFace(llm=llm)
 
 # ==============================
@@ -174,12 +177,20 @@ retriever = vector_db.as_retriever(
 # Prompt
 # ==============================
 prompt = ChatPromptTemplate.from_template("""
-You are a precise research assistant.
+You are RABOT, a research paper assistant.
 
-Rules:
-- Answer ONLY from the provided context
-- If not found, say: "Not found in the paper"
-- Do NOT guess
+Instructions:
+1. Answer only using the provided paper context.
+2. If the answer is unavailable, say:
+   "This information is not available in the paper."
+3. Be factual and concise.
+4. Use bullet points when appropriate.
+5. For summaries provide:
+   - Problem
+   - Methodology
+   - Key Contributions
+   - Results
+   - Limitations
 
 Context:
 {context}
@@ -187,7 +198,8 @@ Context:
 Question:
 {Question}
 
-Answer clearly and concisely.
+Answer:
+
 """)
 
 # ==============================
