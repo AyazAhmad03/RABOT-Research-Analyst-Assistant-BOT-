@@ -70,13 +70,13 @@ def safe_arxiv_load(query, retries=3):
             )
 
             return loader.load()
-
         except Exception as e:
-
-            st.warning(
-                f"Retry {i+1}: arXiv loading failed"
-            )
-
+            st.error(
+        f"Retry {i+1}: {str(e)}"
+        )
+            print(
+                f"ARXIV ERROR: {e}"
+                  )
             time.sleep(2)
 
     return []
@@ -111,7 +111,6 @@ def search_papers(query):
         )
     except Exception as e:
         st.error(str(e))
-
 
     return []
 
