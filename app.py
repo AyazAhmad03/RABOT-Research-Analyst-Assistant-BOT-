@@ -355,7 +355,7 @@ if "rag_chain" in st.session_state:
     # ======================================
 
     question = st.text_input(
-        "Ask a question about the paper"
+        "Ask any question about the paper"
     )
 
     if st.button("Ask"):
