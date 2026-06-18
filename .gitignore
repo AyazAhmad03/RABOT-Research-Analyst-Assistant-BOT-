@@ -2,5 +2,4 @@ venv/
 __pycahe__/
 .env
 *.pyc
-app.py
 templates/
