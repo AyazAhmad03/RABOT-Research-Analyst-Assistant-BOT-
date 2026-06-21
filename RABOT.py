@@ -6,8 +6,7 @@ from langchain_core.runnables import RunnablePassthrough
 import requests
 import time
 import os
-from dotenv import load_dotenv
-
+from langchain_groq import ChatGroq
 # ==============================
 # Load environment variables
 # ==============================
@@ -16,13 +15,10 @@ load_dotenv()
 # ==============================
 # Load LLM
 # ==============================
-llm = HuggingFaceEndpoint(
-    repo_id="meta-llama/Llama-3.1-8B-Instruct",
-    provider="novita",
-    huggingfacehub_api_token=os.getenv( "HUGGINGFACEHUB_API_TOKEN")
-    
-model = ChatHuggingFace(llm=llm)
-
+model=ChatGroq(
+    model_name="llama-3.3-70b-versatile",
+    temperature=0
+)
 # ==============================
 # Safe arXiv loader (handles 429)
 # ==============================

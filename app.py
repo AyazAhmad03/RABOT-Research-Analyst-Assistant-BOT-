@@ -8,6 +8,7 @@ from langchain_huggingface import (
     ChatHuggingFace,
     HuggingFaceEmbeddings
 )
+from langchain_groq import ChatGroq
 
 from langchain_community.document_loaders import ArxivLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -31,17 +32,13 @@ st.set_page_config(
 # ==========================================
 # LLM
 # ==========================================
-
 @st.cache_resource
 def load_llm():
 
-    llm = HuggingFaceEndpoint(
-        repo_id="meta-llama/Llama-3.1-8B-Instruct",
-        provider="novita",
-        huggingfacehub_api_token=os.getenv("HUGGINGFACEHUB_API_TOKEN")
+    model = ChatGroq(
+        model_name="llama-3.3-70b-versatile",
+        temperature=0
     )
-
-    model = ChatHuggingFace(llm=llm)
 
     return model
 
