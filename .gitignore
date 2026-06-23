@@ -3,3 +3,4 @@ __pycahe__/
 .env
 *.pyc
 templates/
+vector_store/

@@ -1,4 +1,3 @@
-from langchain_huggingface import HuggingFaceEndpoint, ChatHuggingFace
 from dotenv import load_dotenv
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
@@ -157,12 +156,29 @@ embeddings = HuggingFaceEmbeddings(
 # ==============================
 # Vector Store
 # ==============================
-from langchain_community.vectorstores import FAISS
+from langchain_chroma import Chroma
+import hashlib
 
-vector_db = FAISS.from_documents(
-    documents=chunks,
-    embedding=embeddings
+os.makedirs("vector_store",exist_ok=True)
+paper_id=hashlib.md5(
+    selected_title.encode()
+).hexdigest()
+
+persist_dir=f"vector_store/{paper_id}"
+
+if os.path.exists(persist_dir):
+    print("Loading existing vector database...")
+    vector_db = Chroma(
+    persist_directory=persist_dir,
+    embedding_function=embeddings
 )
+else:
+    print("Creating new vector database...")
+    vector_db=Chroma.from_documents(
+        documents=chunks,
+        embedding=embeddings,
+        persist_directory=persist_dir
+    )
 
 retriever = vector_db.as_retriever(
     search_type='mmr',

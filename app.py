@@ -3,16 +3,14 @@ import requests
 import time
 import os
 
-from langchain_huggingface import (
-    HuggingFaceEndpoint,
-    ChatHuggingFace,
-    HuggingFaceEmbeddings
-)
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_groq import ChatGroq
 
 from langchain_community.document_loaders import ArxivLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import FAISS
+from langchain_chroma import Chroma
+import hashlib
+import gc
 
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
@@ -138,7 +136,7 @@ def get_arxiv_id(paper):
 # BUILD RAG
 # ==========================================
 
-def build_rag_chain(documents):
+def build_rag_chain(documents,paper_title):
 
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=700,
@@ -150,16 +148,39 @@ def build_rag_chain(documents):
     )
 
     embeddings = get_embeddings()
-
-    vector_db = FAISS.from_documents(
-        chunks,
-        embeddings
+    os.makedirs(
+    "vector_store",
+    exist_ok=True
     )
+    paper_id = hashlib.md5(
+    paper_title.encode()
+    ).hexdigest()
+    persist_dir = f"vector_store/{paper_id}"
+    
+    if os.path.exists(persist_dir):
+        st.info(
+        "Loading existing vector database..."
+        )
+        vector_db = Chroma(
+        persist_directory=persist_dir,
+        embedding_function=embeddings
+        )
+    else:
+        st.info(
+        "Creating vector database..."
+        )
+        vector_db = Chroma.from_documents(
+        documents=chunks,
+        embedding=embeddings,
+        persist_directory=persist_dir
+        )
 
     retriever = vector_db.as_retriever(
         search_type="mmr",
         search_kwargs={"k": 5}
     )
+    del chunks
+    gc.collect()
 
     prompt = ChatPromptTemplate.from_template(
         """
@@ -298,8 +319,11 @@ if "papers" in st.session_state:
                 ):
 
                     rag_chain = build_rag_chain(
-                        docs
+                        docs,
+                        selected_title
                     )
+                    del docs
+                    gc.collect()
 
                 st.session_state.rag_chain = (
                     rag_chain
