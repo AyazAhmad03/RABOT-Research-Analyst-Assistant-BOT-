@@ -1,49 +1,64 @@
-# 📚 RABOT: Research Assistant Bot
+# 📚 RABOT: AI-Powered Research Paper Assistant
 
 ## Overview
 
-RABOT is an AI-powered Research Assistant that enables users to discover, summarize, and interact with research papers through natural language conversations. Built using Retrieval-Augmented Generation (RAG), the system combines academic paper retrieval with Large Language Models (LLMs) to provide context-aware and accurate responses grounded in the selected research paper.
+RABOT (Research Assistant Bot) is an AI-powered research companion that helps users discover, understand, summarize, and interact with academic research papers through natural language conversations.
 
-The application allows users to search for papers using keywords or titles, retrieve relevant publications from OpenAlex, load full-text papers from arXiv, generate structured summaries, and ask unlimited questions about the paper's content.
+Built using Retrieval-Augmented Generation (RAG), RABOT combines paper discovery, document retrieval, semantic search, vector databases, and Large Language Models to provide context-aware answers grounded in research papers.
+
+Users can search for papers, load full-text research articles, generate structured summaries, and ask unlimited questions about the paper's content.
 
 ---
 
-## Key Features
+## Features
 
 ### 🔍 Intelligent Paper Discovery
 
 * Search research papers using OpenAlex.
-* Retrieve top matching papers based on user queries.
-* Display multiple candidate papers for selection.
+* Retrieve the most relevant papers based on keywords or titles.
+* Display multiple candidate papers for user selection.
 
-### 📄 Automated Paper Retrieval
+### 📄 Automated Research Paper Retrieval
 
-* Fetch research papers directly from arXiv.
-* Automatic extraction and processing of paper content.
+* Load papers directly from arXiv.
+* Automatic extraction and processing of research paper content.
 * Retry mechanism for robust document loading.
 
-### 🧠 AI-Powered Summarization
+### 🧠 AI-Powered Paper Summarization
 
-* Generate structured summaries including:
+Generate structured summaries including:
 
-  * Research Problem
-  * Methodology
-  * Key Contributions
-  * Results
-  * Limitations
+* Research Problem
+* Methodology
+* Key Contributions
+* Results
+* Limitations
 
 ### 💬 Conversational Research Assistant
 
-* Ask unlimited questions related to the selected paper.
+* Ask unlimited questions about the selected paper.
 * Context-aware responses grounded in the document.
-* Hallucination-reduction through retrieval-based generation.
+* Hallucination reduction using Retrieval-Augmented Generation.
 
 ### ⚡ Retrieval-Augmented Generation (RAG)
 
 * Semantic chunking of research papers.
 * Vector embeddings using Sentence Transformers.
-* FAISS-powered similarity search and retrieval.
-* Context injection into LLM prompts for accurate responses.
+* Persistent vector storage using ChromaDB.
+* Context retrieval for accurate paper understanding.
+* Groq-powered LLM inference.
+
+### 💾 Persistent Knowledge Base
+
+* Embeddings are stored locally using ChromaDB.
+* Previously processed papers can be loaded instantly.
+* Avoids recomputing embeddings for the same paper.
+
+### 🚀 Modern Web Interface
+
+* Streamlit-based UI.
+* Interactive landing page.
+* Paper search, loading, summarization, and Q&A in one application.
 
 ---
 
@@ -53,31 +68,31 @@ The application allows users to search for papers using keywords or titles, retr
 User Query
      │
      ▼
- OpenAlex Search
+OpenAlex Search
      │
      ▼
- Paper Selection
+Paper Selection
      │
      ▼
- arXiv Paper Retrieval
+arXiv Retrieval
      │
      ▼
- Text Chunking
+Document Chunking
      │
      ▼
- Embedding Generation
+Embedding Generation
      │
      ▼
- FAISS Vector Store
+ChromaDB Vector Store
      │
      ▼
- Context Retrieval
+Retriever
      │
      ▼
- Llama 3.1 (RAG)
+Groq Llama 3.3 70B
      │
      ▼
- Final Answer
+Final Response
 ```
 
 ---
@@ -95,23 +110,26 @@ User Query
 
 ### AI & Machine Learning
 
-* Llama 3.1 8B Instruct
-* Hugging Face Inference API
+* Groq API
+* Llama 3.3 70B Versatile
 * Sentence Transformers
+* Retrieval-Augmented Generation (RAG)
 
 ### Vector Database
 
-* FAISS
+* ChromaDB
 
-### Data Sources
+### Research Sources
 
 * OpenAlex API
 * arXiv API
 
 ### Supporting Libraries
 
+* LangChain
+* LangChain Chroma
 * LangChain Community
-* LangChain HuggingFace
+* LangChain Groq
 * Requests
 * Python Dotenv
 
@@ -137,7 +155,7 @@ pip install -r requirements.txt
 Create a `.env` file:
 
 ```env
-HUGGINGFACEHUB_API_TOKEN=YOUR_HUGGINGFACE_TOKEN
+GROQ_API_KEY=YOUR_GROQ_API_KEY
 ```
 
 ### Run Application
@@ -150,45 +168,59 @@ streamlit run app.py
 
 ## Example Questions
 
+### Paper Understanding
+
 * Give a structured summary of the paper.
+* Explain the paper in detail.
 * What problem does this paper solve?
-* Explain the proposed methodology.
-* What datasets were used in the experiments?
-* What are the key contributions of the paper?
-* What are the limitations discussed by the authors?
-* Compare the proposed approach with previous methods.
+* What are the key contributions?
+
+### Technical Analysis
+
+* Explain the methodology.
+* Explain the mathematical formulation.
+* What datasets were used?
+* How does this compare with previous approaches?
+
+### Research Insights
+
+* What are the limitations?
+* What future work is suggested?
+* What are the main experimental results?
 
 ---
 
 ## Future Enhancements
 
-* Multi-turn conversational memory
-* PDF upload support for non-arXiv papers
-* Citation-aware responses
-* Multi-paper comparison
-* Research paper recommendation engine
-* Export summaries to PDF
-* Source chunk visualization
+* PDF Upload Support
+* Multi-Paper Comparison
+* Research Paper Recommendation Engine
+* Citation-Aware Responses
+* Conversational Memory
+* Export Summaries to PDF
+* Source Chunk Visualization
+* Multi-Agent Research Workflow
 
 ---
 
 ## Project Highlights
 
-* End-to-end Retrieval-Augmented Generation pipeline.
-* Academic paper search and retrieval integration.
-* Semantic document understanding using vector embeddings.
-* Context-grounded question answering system.
-* Scalable architecture suitable for research and educational use.
+* End-to-End Retrieval-Augmented Generation Pipeline
+* Research Paper Search and Retrieval
+* Persistent ChromaDB Knowledge Base
+* Semantic Search over Research Papers
+* Groq-Powered Large Language Models
+* Context-Grounded Question Answering
+* Research-Focused AI Assistant
 
 ---
 
 ## Author
 
 **Ayaz Ahmad**
-B.Tech (Artificial Intelligence & Machine Learning)
-Delhi Technical Campus, GGSIPU
 
-GitHub: https://github.com/AyazAhmad03
+GitHub:
+https://github.com/AyazAhmad03
 
 ---
 
