@@ -26,6 +26,76 @@ st.set_page_config(
     layout="wide"
 )
 
+# ==========================================
+# LANDING PAGE
+# ==========================================
+
+if "launch_rabot" not in st.session_state:
+    st.session_state.launch_rabot = False
+
+if not st.session_state.launch_rabot:
+
+    st.title("📚 RABOT")
+
+    st.subheader(
+        "AI-Powered Research Paper Assistant"
+    )
+
+    st.markdown("""
+    Discover, summarize and interact with research papers using
+    Retrieval-Augmented Generation (RAG), semantic search,
+    vector databases and Large Language Models.
+    """)
+
+    st.markdown("---")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.markdown("""
+        ### 🔍 Search Papers
+        Search academic papers using OpenAlex.
+        """)
+
+    with col2:
+        st.markdown("""
+        ### 📄 Load Research Papers
+        Retrieve and process research papers.
+        """)
+
+    with col3:
+        st.markdown("""
+        ### 💬 Chat With Papers
+        Ask questions and generate summaries.
+        """)
+
+    st.markdown("---")
+
+    st.markdown("""
+    ### How It Works
+
+    1. Search a research paper
+
+    2. Select a paper
+
+    3. Build a knowledge base
+
+    4. Generate summaries
+
+    5. Chat with the paper
+    """)
+
+    st.markdown("---")
+
+    if st.button(
+        "🚀 Launch RABOT",
+        use_container_width=True
+    ):
+        st.session_state.launch_rabot = True
+        st.rerun()
+
+    st.stop()
+
 
 # ==========================================
 # LLM
