@@ -3,6 +3,20 @@ import requests
 import time
 import os
 
+# OpenAlex API
+
+from dotenv import load_dotenv
+
+from dotenv import load_dotenv
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+load_dotenv(
+    os.path.join(BASE_DIR, ".env")
+)
+
+OPENALEX_API_KEY = os.getenv("OPENALEX_API_KEY")
+
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_groq import ChatGroq
 
@@ -15,6 +29,7 @@ import gc
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
+
 
 # ==========================================
 # CONFIG
@@ -33,7 +48,7 @@ st.set_page_config(
 def load_llm():
 
     model = ChatGroq(
-        model_name="llama-3.3-70b-versatile",
+        model_name="openai/gpt-oss-120b",
         temperature=0
     )
 
@@ -81,32 +96,86 @@ def safe_arxiv_load(query, retries=3):
 
 def search_papers(query):
 
-    url = "https://api.openalex.org/works"
+    if not OPENALEX_API_KEY:
+        st.error(
+            "OPENALEX_API_KEY is missing from .env"
+        )
+        return []
+
+    OPENALEX_URL = "https://api.openalex.org/works"
 
     params = {
         "search": query,
         "filter": "is_oa:true",
-        "per-page": 5
+        "per_page": 5,
+        "api_key": OPENALEX_API_KEY
     }
-    
-    try:
 
-        response = requests.get(
-            url,
-            params=params,
-            timeout=15
-        )
+    data = []
 
-        response.raise_for_status()
+    for attempt in range(5):
 
-        return response.json().get(
-            "results",
-            []
-        )
-    except Exception as e:
-        st.error(str(e))
+        try:
 
-    return []
+            response = requests.get(
+                OPENALEX_URL,
+                params=params,
+                timeout=20
+            )
+
+            # Handle rate limiting
+            if response.status_code == 429:
+
+                retry_after = response.headers.get(
+                    "Retry-After"
+                )
+
+                if retry_after:
+                    wait_time = int(retry_after)
+                else:
+                    wait_time = 2 ** attempt
+
+                st.warning(
+                    f"OpenAlex rate limited. "
+                    f"Retrying in {wait_time} seconds..."
+                )
+
+                time.sleep(wait_time)
+                continue
+
+            response.raise_for_status()
+
+            data = response.json().get(
+                "results",
+                []
+            )
+
+            break
+
+        except requests.RequestException as e:
+
+            print(
+                f"[OpenAlex] Request error "
+                f"(attempt {attempt + 1}/5): {e}"
+            )
+
+            if attempt < 4:
+
+                wait_time = 2 ** attempt
+
+                print(
+                    f"Retrying in {wait_time} seconds..."
+                )
+
+                time.sleep(wait_time)
+
+            else:
+
+                st.error(
+                    "OpenAlex request failed after 5 attempts."
+                )
+
+    return data
 
 # ==========================================
 # GET ARXIV ID

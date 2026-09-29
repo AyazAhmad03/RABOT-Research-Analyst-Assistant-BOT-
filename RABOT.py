@@ -11,11 +11,12 @@ from langchain_groq import ChatGroq
 # ==============================
 load_dotenv()
 
+OPENALEX_API_KEY = os.getenv("OPENALEX_API_KEY")
 # ==============================
 # Load LLM
 # ==============================
 model=ChatGroq(
-    model_name="llama-3.3-70b-versatile",
+    model_name="openai/gpt-oss-120b",
     temperature=0
 )
 # ==============================
@@ -50,18 +51,59 @@ print(f"\n[INFO] Searching for: {user_query_paper}")
 OPENALEX_URL = "https://api.openalex.org/works"
 
 params = {
-    "search": f'"{user_query_paper}"',
+    "search": user_query_paper,
     "filter": "is_oa:true",
-    "per-page": 5
+    "per_page": 5,
+    "api_key": OPENALEX_API_KEY
 }
 
-try:
-    response = requests.get(OPENALEX_URL, params=params, timeout=10)
-    response.raise_for_status()
-    data = response.json().get("results", [])
-except Exception as e:
-    print("Error fetching papers:", e)
-    data = []
+data = []
+
+for attempt in range(5):
+    try:
+        response = requests.get(
+            OPENALEX_URL,
+            params=params,
+            timeout=20
+        )
+
+        if response.status_code == 429:
+            retry_after = response.headers.get("Retry-After")
+
+            if retry_after:
+                wait_time = int(retry_after)
+            else:
+                wait_time = 2 ** attempt
+
+            print(
+                f"[OpenAlex] Rate limited (429). "
+                f"Waiting {wait_time} seconds..."
+            )
+
+            time.sleep(wait_time)
+            continue
+
+        response.raise_for_status()
+
+        data = response.json().get("results", [])
+        break
+
+    except requests.RequestException as e:
+        print(
+            f"[OpenAlex] Request error "
+            f"(attempt {attempt + 1}/5): {e}"
+        )
+
+        if attempt < 4:
+            wait_time = 2 ** attempt
+            print(f"Retrying in {wait_time} seconds...")
+            time.sleep(wait_time)
+        else:
+            print("OpenAlex request failed after 5 attempts.")
+
+if not data:
+    print("No relevant paper found. Try exact title.")
+    exit()
 
 documents = []
 
