@@ -1,233 +1,237 @@
-# 📚 RABOT: AI-Powered Research Paper Assistant
+<div align="center">
 
-## Overview
+<br/>
 
-RABOT (Research Assistant Bot) is an AI-powered research companion that helps users discover, understand, summarize, and interact with academic research papers through natural language conversations.
+# ◈ R A B O T
 
-Built using Retrieval-Augmented Generation (RAG), RABOT combines paper discovery, document retrieval, semantic search, vector databases, and Large Language Models to provide context-aware answers grounded in research papers.
+### Read less. Understand more.
 
-Users can search for papers, load full-text research articles, generate structured summaries, and ask unlimited questions about the paper's content.
+**Your research-paper companion. Find a paper, get a clear summary, and question it, with every answer grounded in the paper's own words.**
 
----
+<br/>
 
-## Features
+![Python](https://img.shields.io/badge/Python-3.10%2B-F2B15C?style=for-the-badge&logo=python&logoColor=white&labelColor=12141C)
+![Streamlit](https://img.shields.io/badge/Streamlit-UI-8B7CFF?style=for-the-badge&labelColor=12141C)
+![LangChain](https://img.shields.io/badge/LangChain-RAG-F2B15C?style=for-the-badge&labelColor=12141C)
+![ChromaDB](https://img.shields.io/badge/ChromaDB-Vectors-8B7CFF?style=for-the-badge&labelColor=12141C)
+![Groq](https://img.shields.io/badge/Groq-Inference-F2B15C?style=for-the-badge&labelColor=12141C)
 
-### 🔍 Intelligent Paper Discovery
+<br/>
 
-* Search research papers using OpenAlex.
-* Retrieve the most relevant papers based on keywords or titles.
-* Display multiple candidate papers for user selection.
+[Why RABOT](#-why-rabot) · [See it in action](#-see-it-in-action) · [Features](#-features) · [How it works](#-how-it-works) · [Quick start](#-quick-start) · [FAQ](#-faq)
 
-### 📄 Automated Research Paper Retrieval
+<br/>
 
-* Load papers directly from arXiv.
-* Automatic extraction and processing of research paper content.
-* Retry mechanism for robust document loading.
+<!-- Add a screenshot here:  ![RABOT home](screenshot-home.png) -->
 
-### 🧠 AI-Powered Paper Summarization
-
-Generate structured summaries including:
-
-* Research Problem
-* Methodology
-* Key Contributions
-* Results
-* Limitations
-
-### 💬 Conversational Research Assistant
-
-* Ask unlimited questions about the selected paper.
-* Context-aware responses grounded in the document.
-* Hallucination reduction using Retrieval-Augmented Generation.
-
-### ⚡ Retrieval-Augmented Generation (RAG)
-
-* Semantic chunking of research papers.
-* Vector embeddings using Sentence Transformers.
-* Persistent vector storage using ChromaDB.
-* Context retrieval for accurate paper understanding.
-* Groq-powered LLM inference.
-
-### 💾 Persistent Knowledge Base
-
-* Embeddings are stored locally using ChromaDB.
-* Previously processed papers can be loaded instantly.
-* Avoids recomputing embeddings for the same paper.
-
-### 🚀 Modern Web Interface
-
-* Streamlit-based UI.
-* Interactive landing page.
-* Paper search, loading, summarization, and Q&A in one application.
+</div>
 
 ---
 
-## System Architecture
+## ✦ Why RABOT?
+
+A research paper can hide the one answer you need on page nine. Skimming takes time, and a general chatbot may confidently invent what the paper "says".
+
+**RABOT is built around one rule: the paper is the only source of truth.**
+
+| Without RABOT | With RABOT |
+|---|---|
+| Hunt for the right paper across tabs | Search once and pick from ranked matches |
+| Read 15 pages to find the method | A structured summary in seconds |
+| Wonder whether an AI answer is real | Every answer shows the passages it came from |
+| Re-process a paper you read last week | Reopen it instantly from saved data |
+
+If the paper doesn't contain the answer, RABOT says **"This information is not available in the paper."** and doesn't guess.
+
+---
+
+## ✦ See it in action
 
 ```text
-User Query
-     │
-     ▼
-OpenAlex Search
-     │
-     ▼
-Paper Selection
-     │
-     ▼
-arXiv Retrieval
-     │
-     ▼
-Document Chunking
-     │
-     ▼
-Embedding Generation
-     │
-     ▼
-ChromaDB Vector Store
-     │
-     ▼
-Retriever
-     │
-     ▼
-Groq Llama 3.3 70B
-     │
-     ▼
-Final Response
+ ◈ RABOT                                  Search papers  ▸  attention is all you need
+
+ ┌─────────────────────────────────────────────────────────────────────────────┐
+ │  Attention Is All You Need                                                  │
+ │  Vaswani · Shazeer · Parmar · Uszkoreit                                     │
+ └─────────────────────────────────────────────────────────────────────────────┘
+   [ 68 passages indexed ]   [ citations ]   [ questions asked ]
+
+   Summary │ Ask the paper
+   ───────────────────────
+   Overview · Problem · Methodology · Key Contributions · Results · Limitations
+
+ 🧑‍🔬  Explain the methodology simply
+
+ 🤖  The methodology of the paper is to replace recurrent and convolutional
+     models with a fully attention-based architecture called the Transformer...
+       ▸ Source passages
 ```
 
----
+**A typical session takes under a minute:**
 
-## Technology Stack
-
-### Frontend
-
-* Streamlit
-
-### Backend
-
-* Python
-* LangChain
-
-### AI & Machine Learning
-
-* Groq API
-* Llama 3.3 70B Versatile
-* Sentence Transformers
-* Retrieval-Augmented Generation (RAG)
-
-### Vector Database
-
-* ChromaDB
-
-### Research Sources
-
-* OpenAlex API
-* arXiv API
-
-### Supporting Libraries
-
-* LangChain
-* LangChain Chroma
-* LangChain Community
-* LangChain Groq
-* Requests
-* Python Dotenv
+1. **Search** a title or a few keywords.
+2. **Open** the paper you want.
+3. **Read** the structured summary.
+4. **Ask** anything, from *"What datasets were used?"* to *"Explain the methodology simply."*
 
 ---
 
-## Installation
+## ✦ Features
 
-### Clone Repository
+### 🔎 Find the right paper fast
+Search open-access papers through OpenAlex. Results appear as cards with the year, authors and citation count, so you can pick with confidence.
+
+### 🧾 Summaries that read like a tutor wrote them
+Each summary covers **Overview, Problem, Methodology, Key Contributions, Results and Limitations**, then ends with an *In Simple Words* recap. Sections open with natural lead-ins such as *"The key contributions of this paper are…"*. The summary is built from seven targeted searches across the whole paper, so it doesn't rest on a single lucky passage.
+
+### 💬 Answers you can verify
+Ask in plain language and watch the answer stream in. Open **Source passages** under any answer to see the exact text it was drawn from.
+
+### ⚡ Instant reopen
+The vector index and the summary for each paper are saved to disk. Reopening a paper skips the download, the embedding and the summary generation.
+
+### 🌑 A calm, focused interface
+A custom **Obsidian & Amber** dark theme with warm gold accents and iris-violet glows. It has smooth card animations, a clean chat view, one-click suggested questions and a layout that adapts to smaller screens.
+
+### 📤 Take your notes with you
+Export the whole conversation as a Markdown file.
+
+---
+
+## ✦ Who it's for
+
+- **Students** getting to grips with a paper before a seminar or exam
+- **Researchers** triaging a reading list quickly
+- **Engineers** checking a method or benchmark before implementing it
+- **Curious readers** who want to understand a landmark paper without wading through jargon
+
+---
+
+## ✦ How it works
+
+```mermaid
+flowchart LR
+    A([Your query]) --> B[OpenAlex search]
+    B --> C[Pick a paper]
+    C --> D[arXiv full text]
+    D --> E[Chunking<br/>700 chars · 100 overlap]
+    E --> F[Local embeddings<br/>MiniLM-L6-v2]
+    F --> G[(ChromaDB<br/>one index per paper)]
+    G --> H[MMR retrieval]
+    H --> I[Groq LLM]
+    I --> J([Summary and answers<br/>with source passages])
+```
+
+**Why you can trust the answers**
+
+- **Retrieval first:** the model only sees passages pulled from the paper for your question.
+- **Strict instructions:** the prompt forbids outside knowledge and requires the paper's own terminology.
+- **Varied evidence:** MMR retrieval chooses passages that are relevant *and* different from each other, so answers draw on more of the paper.
+- **Transparent sources:** the passages behind each answer are one click away.
+
+---
+
+## ✦ Tech stack
+
+| Layer | Choice |
+|---|---|
+| Interface | Streamlit with custom CSS |
+| Orchestration | LangChain |
+| Language model | Groq · `openai/gpt-oss-120b` |
+| Embeddings | Sentence Transformers `all-MiniLM-L6-v2`, run locally |
+| Vector store | ChromaDB, persistent |
+| Paper sources | OpenAlex API · arXiv |
+
+---
+
+## ✦ Quick start
+
+**1 · Clone and install**
 
 ```bash
 git clone https://github.com/AyazAhmad03/rabot.git
 cd rabot
-```
-
-### Install Dependencies
-
-```bash
 pip install -r requirements.txt
 ```
 
-### Configure Environment Variables
-
-Create a `.env` file:
+**2 · Add your keys** to a `.env` file in the project root:
 
 ```env
-GROQ_API_KEY=YOUR_GROQ_API_KEY
+GROQ_API_KEY=your_groq_api_key
+OPENALEX_API_KEY=your_openalex_api_key
 ```
 
-### Run Application
+> 🔒 Add `.env` to `.gitignore` so your keys never reach GitHub.
+
+**3 · Launch**
 
 ```bash
 streamlit run app.py
 ```
 
----
-
-## Example Questions
-
-### Paper Understanding
-
-* Give a structured summary of the paper.
-* Explain the paper in detail.
-* What problem does this paper solve?
-* What are the key contributions?
-
-### Technical Analysis
-
-* Explain the methodology.
-* Explain the mathematical formulation.
-* What datasets were used?
-* How does this compare with previous approaches?
-
-### Research Insights
-
-* What are the limitations?
-* What future work is suggested?
-* What are the main experimental results?
+The app opens in your browser. Search for a paper from the sidebar to begin.
 
 ---
 
-## Future Enhancements
+## ✦ Try these questions
 
-* PDF Upload Support
-* Multi-Paper Comparison
-* Research Paper Recommendation Engine
-* Citation-Aware Responses
-* Conversational Memory
-* Export Summaries to PDF
-* Source Chunk Visualization
-* Multi-Agent Research Workflow
+| Understand | Dig deeper | Evaluate |
+|---|---|---|
+| What problem does this paper solve? | Explain the methodology simply. | What datasets were used? |
+| What are the key contributions? | How does the model architecture work? | What are the main results? |
+| Explain this paper to a beginner. | What do the authors compare against? | What are the limitations? |
 
 ---
 
-## Project Highlights
+## ✦ Project structure
 
-* End-to-End Retrieval-Augmented Generation Pipeline
-* Research Paper Search and Retrieval
-* Persistent ChromaDB Knowledge Base
-* Semantic Search over Research Papers
-* Groq-Powered Large Language Models
-* Context-Grounded Question Answering
-* Research-Focused AI Assistant
-
----
-
-## Author
-
-**Ayaz Ahmad**
-
-GitHub:
-https://github.com/AyazAhmad03
+```text
+rabot/
+├── app.py            # UI, retrieval pipeline and prompts
+├── requirements.txt
+├── .env              # API keys (not committed)
+└── vector_store/     # Saved indexes and summaries, one set per paper
+```
 
 ---
 
-## License
+## ✦ FAQ
 
-This project is intended for educational, research, and portfolio purposes.
+**Does RABOT use my own papers?**
+Not yet. It loads open-access papers that are available on arXiv.
 
-Responses are generated using AI and retrieved paper content.
+**Will it make things up?**
+Like any AI system it can make mistakes, but it is designed to answer only from retrieved passages and to say so when the paper doesn't contain the answer. Check key findings against the original paper.
 
-Users should verify important findings directly from the original research paper.
+**Do I pay for embeddings?**
+No. Embeddings run locally on your machine or server. The only API usage is the Groq model, once for the summary and once per question.
+
+**Why did a paper fail to load?**
+RABOT needs an arXiv version of the paper. If a result has none, try another result or a more exact title.
+
+**Does it remember earlier questions?**
+Each question is answered independently for now, so follow-ups work best when they're self-contained.
+
+---
+
+## ✦ Roadmap
+
+- [ ] Conversational memory for follow-up questions
+- [ ] Page-aware source citations
+- [ ] Multi-paper comparison
+- [ ] Export summaries to PDF
+- [ ] A library of previously opened papers
+
+---
+
+## ✦ Author
+
+Built by **Ayaz Ahmad** · [github.com/AyazAhmad03](https://github.com/AyazAhmad03)
+
+If RABOT helps you read faster, a ⭐ on the repo is always appreciated.
+
+---
+
+<div align="center">
+<sub>RABOT is made for education, research and portfolio use. Responses are generated by an AI model from retrieved paper text and may contain errors, so verify important findings in the original paper.</sub>
+</div>
